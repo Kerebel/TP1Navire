@@ -18,9 +18,9 @@ namespace TP1Navire
         }
         public void EnregistrerArrivee(Navire navire)
         {
-            if (nbNaviresMax > navires.Count)
+            if (this.navires.Count < nbNaviresMax)
             {
-                navires.Add(navire);
+                this.navires.Add(navire);
             }
             else
             {
@@ -29,9 +29,10 @@ namespace TP1Navire
         }
         public void EnregistrerDepart(string imo)
         {
-            if (EstPresent(imo))
+            int index = RecupPosition(imo);
+            if (index >=0)
             {
-                navires.RemoveAt(RecupPosition(imo));
+                this.navires.RemoveAt(index);
             }
             else
             {
@@ -56,46 +57,35 @@ namespace TP1Navire
             this.EnregistrerArrivee(navire);
             this.EnregistrerArrivee(new Navire("IMO9839272", "MSC Isabella", "Porte-conteneurs", 197500));
             this.EnregistrerArrivee(new Navire("IMO8715871", "MSC PILAR"));
-            Console.WriteLine("Indice du navire" + navire.Imo + " dans la collection : " + this.RecupPosition(navire));
-            Navire unAutreNavire = new Navire("IMQ8715871", "MSC PILAR");
+            Console.WriteLine("Indice du navire " + navire.Imo + " dans la collection : " + this.RecupPosition(navire));
+            Navire unAutreNavire = new Navire("IMO8715871", "MSC PILAR");
             Console.WriteLine("Indice du navire " + unAutreNavire.Imo + " dans la collection : " + this.RecupPosition(unAutreNavire));
             unAutreNavire = new Navire("IMO8715871", "MSC PILAR", "Porte-conteneurs", 52181);
-            Console.WriteLine("Indice du navire " + unAutreNavire.Imo + " dans la collection : " + this.RecupPosition(unAutreNavire)); ;
+            Console.WriteLine("Indice du navire " + unAutreNavire.Imo + " dans la collection : " + this.RecupPosition(unAutreNavire));
         }
         public bool EstPresent(string imo)
         {
-            foreach (Navire navire in navires)
-            { 
-                if ( imo == navire.Imo)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return RecupPosition(imo) >= 0;
         }
         private int RecupPosition(string imo)
         {
-            
-           if ( EstPresent(imo))
-           {
-                foreach (Navire navire in navires)
-                {
-                    if (imo == navire.Imo)
-                    {
-                        return RecupPosition(navire);
-                    }
-                   
-                }
+            int i = 0;
+            while (i < this.navires.Count && this.navires[i].Imo != imo)
+            {
+                i++;
             }
-            return -1;
+            if ( i < this.navires.Count) 
+            {
+                return i;
+            }
+            else
+            {
+                return -1;
+            }
         }
         private int RecupPosition(Navire navire)
         {
-                if (navires.Contains(navire))
-                {
-                    return navires.IndexOf(navire);
-                }
-            return -1;
+            return RecupPosition(navire.Imo);
         }
         public string Nom { get => nom; }
         public int NbNaviresMax { get => nbNaviresMax; set => nbNaviresMax = value; }

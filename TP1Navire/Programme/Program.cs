@@ -7,11 +7,12 @@ namespace TP1Navire
         static void Main()
         {
             ////TesterInstanciations();
-            ////TesterEnregistrerArrivee();
-            ////TesterRecupPosition();
-            //TesterRecupPositionV2();
+            //TesterEnregistrerArrivee();
+            TesterRecupPosition();
+            TesterRecupPositionV2();
             //TesterEnregistrerDepart();
-            testerEstPresent();
+            //testerEstPresent();
+            Console.WriteLine("--Fin du Programme --");
         }
         public static void TesterInstanciations()
         {
@@ -40,7 +41,7 @@ namespace TP1Navire
         {
             try
             {
-                Port port = new Port("Brest");
+                Port port = new Port("Toulon");
                 port.EnregistrerArrivee(new Navire("IMO9427639", "Copper Spirit", "Hydrocarbures", 156827));
                 port.EnregistrerArrivee(new Navire("IMO8715871", "MSC PILAR"));
                 port.EnregistrerArrivee(new Navire("IMO9839272", "MSC Isabella", "Porte-conteneurs", 197500));
@@ -81,7 +82,7 @@ namespace TP1Navire
                 Console.WriteLine(ex.Message);
             }
         }
-        public static void testerEstPresent()
+        public static void TesterEstPresent()
         {
             Port port = new Port("Toulon");
             port.EnregistrerArrivee(new Navire("IMO9427639", "Copper Spirit", "Hydrocarbures", 156827));
@@ -89,7 +90,7 @@ namespace TP1Navire
             port.EnregistrerArrivee(new Navire("IMO8715871", "MSC PILAR"));
             String imo = "IMO9427639";
             Console.WriteLine("Le navire " + imo + "est présent dans le port : " + port.EstPresent(imo));
-            imo = "IMO11111111";
+            imo = "IMO1111111";
             Console.WriteLine("Le navire " + imo + "est présent dans le port : " + port.EstPresent(imo));
         }
     }
