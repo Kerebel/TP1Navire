@@ -49,8 +49,9 @@ namespace GestionNavire.Classesmetier
         }
         public bool IsMatch(string regex)
         {
-            string protoImo = @"\b^IMO[0-9]{7}\b";
-            if( Regex.IsMatch(protoImo, regex))
+            string protoImo = @"IMO\d{7}$";
+            Match match = Regex.Match(regex, protoImo);
+            if (match.Success )
             {
                 return true;
             }
