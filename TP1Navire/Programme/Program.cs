@@ -1,18 +1,25 @@
 ﻿using System;
+using GestionNavire.Classesmetier;
 
-namespace TP1Navire
+namespace GestionNavire.Application
 {
     class Program
     {
         static void Main()
         {
-            ////TesterInstanciations();
+            //TesterInstanciations();
             //TesterEnregistrerArrivee();
-            TesterRecupPosition();
-            TesterRecupPositionV2();
             //TesterEnregistrerDepart();
-            //testerEstPresent();
-            Console.WriteLine("--Fin du Programme --");
+            //TesterEstPresent();
+            try
+            {
+                Instanciations();
+                Console.WriteLine("Fin normale du programme");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
         public static void TesterInstanciations()
         {
@@ -55,14 +62,6 @@ namespace TP1Navire
                 Console.WriteLine(ex.Message);
             }
         }
-        public static void TesterRecupPosition()
-        {
-            (new Port("Toulon")).TesterRecupPosition();
-        }
-        public static void TesterRecupPositionV2()
-        {
-            (new Port("Toulon")).TesterRecupPositionV2();
-        }
         public static void TesterEnregistrerDepart()
         {
             try
@@ -92,6 +91,22 @@ namespace TP1Navire
             Console.WriteLine("Le navire " + imo + "est présent dans le port : " + port.EstPresent(imo));
             imo = "IMO1111111";
             Console.WriteLine("Le navire " + imo + "est présent dans le port : " + port.EstPresent(imo));
+        }
+        private static void Instanciations()
+        {
+            try
+            {
+                Navire navire = new Navire("IMO9427639", "Copper Spirit", "Hydrocarbures", 156827);
+                navire = new Navire("IMO9839272", "MSC Isabella", "Porte-conteneurs", -197500);
+                navire = new Navire("IMO8715871", "MSC PILAR", "Porte-conteneurs", 67183);
+                navire = new Navire("IMO9235232", "FORTUNE TRADER", "Cargo", 74750);
+                navire = new Navire("IMO9574004", "TRITON SEAHAWK", "Hydrocarbures", 51201);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

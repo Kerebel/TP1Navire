@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TP1Navire
+namespace GestionNavire.Classesmetier
 {
     class Navire
     {
@@ -16,7 +16,7 @@ namespace TP1Navire
             this.imo = imo;
             this.nom = nom;
             this.libelleFret = libelleFret;
-            this.qteFretMaxi = qteFretMaxi;
+            this.QteFretMaxi = qteFretMaxi;
         }
 
         public Navire(string imo, string nom) : this(imo, nom, libelleFret: "Indéfini", 0) { }
@@ -24,11 +24,25 @@ namespace TP1Navire
         {
             return "Identification : " + this.imo + " \n Nom : " + this.nom + "\n Type de frêt : " + this.libelleFret + " \n Quantité de Frêt : " + this.qteFretMaxi;
         }
+        public int QteFretMaxi
+        {
+            get => qteFretMaxi;
+            set
+            {
+                if (value >=0)
+                {
+                    this.qteFretMaxi = value;
+                }
+                else
+                {
+                    throw new Exception("Erreur, quantité de fret non valide");
+                }
+            }
+        }
 
         public string Imo { get => imo; set => imo = value; }
         public string Nom { get => nom; set => nom = value; }
         public string LibelleFret { get => libelleFret; set => libelleFret = value; }
-        public int QteFretMaxi { get => qteFretMaxi; set => qteFretMaxi = value; }
 
     }
 }

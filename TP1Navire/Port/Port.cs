@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
 
-namespace TP1Navire
+namespace GestionNavire.Classesmetier
 {
     class Port
     {
 
         private string nom;
         private int nbNaviresMax = 5;
-        private List<Navire> navires = new List<Navire>();
+        private Dictionary<string, Navire> navires = new Dictionary<string, Navire>();
 
         public Port(string nom)
         {
@@ -20,7 +20,7 @@ namespace TP1Navire
         {
             if (this.navires.Count < nbNaviresMax)
             {
-                this.navires.Add(navire);
+                this.navires.Add(navire.Imo, navire);
             }
             else
             {
@@ -29,65 +29,21 @@ namespace TP1Navire
         }
         public void EnregistrerDepart(string imo)
         {
-            int index = RecupPosition(imo);
-            if (index >=0)
+            if (EstPresent(imo))
             {
-                this.navires.RemoveAt(index);
+                this.navires.Remove(imo);
             }
             else
             {
                 throw new Exception("Impossible d'enregistrer le navire" + imo + " , il n'est pas dans le port");
             }
         }
-        public void TesterRecupPosition()
-        {
-            this.EnregistrerArrivee(new Navire("IMO9427639", "Copper Spirit", "Hydrocarbures", 156827));
-            this.EnregistrerArrivee(new Navire("IMO9839272", "MSC Isabella", "Porte-conteneurs", 197500));
-            this.EnregistrerArrivee(new Navire("IMO8715871", "MSC PILAR"));
-            String imo = "IMO9427639";
-            Console.WriteLine("Indice du navire" + imo + " dans la collection ; " + this.RecupPosition(imo));
-            imo = "IMO8715871";
-            Console.WriteLine("Indice du navire " + imo + " dans la collection : " + this.RecupPosition(imo));
-            imo = "IMO1111111";
-            Console.WriteLine("Indice du navire " + imo + " dans la collection : " + this.RecupPosition(imo)); ;
-        }
-        public void TesterRecupPositionV2()
-        {
-            Navire navire = new Navire("IMO9427639", "Copper Spirit", "Hydrocarbures", 156827);
-            this.EnregistrerArrivee(navire);
-            this.EnregistrerArrivee(new Navire("IMO9839272", "MSC Isabella", "Porte-conteneurs", 197500));
-            this.EnregistrerArrivee(new Navire("IMO8715871", "MSC PILAR"));
-            Console.WriteLine("Indice du navire " + navire.Imo + " dans la collection : " + this.RecupPosition(navire));
-            Navire unAutreNavire = new Navire("IMO8715871", "MSC PILAR");
-            Console.WriteLine("Indice du navire " + unAutreNavire.Imo + " dans la collection : " + this.RecupPosition(unAutreNavire));
-            unAutreNavire = new Navire("IMO8715871", "MSC PILAR", "Porte-conteneurs", 52181);
-            Console.WriteLine("Indice du navire " + unAutreNavire.Imo + " dans la collection : " + this.RecupPosition(unAutreNavire));
-        }
         public bool EstPresent(string imo)
         {
-            return RecupPosition(imo) >= 0;
-        }
-        private int RecupPosition(string imo)
-        {
-            int i = 0;
-            while (i < this.navires.Count && this.navires[i].Imo != imo)
-            {
-                i++;
-            }
-            if ( i < this.navires.Count) 
-            {
-                return i;
-            }
-            else
-            {
-                return -1;
-            }
-        }
-        private int RecupPosition(Navire navire)
-        {
-            return RecupPosition(navire.Imo);
+            return navires.ContainsKey(imo);
         }
         public string Nom { get => nom; }
         public int NbNaviresMax { get => nbNaviresMax; set => nbNaviresMax = value; }
+        internal Dictionary<string, Navire> Navires { get => navires; }
     }
 }
