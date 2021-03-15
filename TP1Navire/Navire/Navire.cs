@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace GestionNavire.Classesmetier
 {
@@ -13,7 +14,14 @@ namespace GestionNavire.Classesmetier
 
         public Navire(string imo, string nom, string libelleFret, int qteFretMaxi)
         {
-            this.imo = imo;
+            if (IsMatch(imo))
+            {
+                this.imo = imo;
+            }
+            else
+            {
+                throw new Exception("Erreur : IMO non valide");
+            }
             this.nom = nom;
             this.libelleFret = libelleFret;
             this.QteFretMaxi = qteFretMaxi;
@@ -39,7 +47,18 @@ namespace GestionNavire.Classesmetier
                 }
             }
         }
-
+        public bool IsMatch(string regex)
+        {
+            string protoImo = @"\b^IMO[0-9]{7}\b";
+            if( Regex.IsMatch(protoImo, regex))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public string Imo { get => imo; set => imo = value; }
         public string Nom { get => nom; set => nom = value; }
         public string LibelleFret { get => libelleFret; set => libelleFret = value; }
