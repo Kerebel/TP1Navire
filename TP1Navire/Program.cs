@@ -43,19 +43,14 @@ namespace GestionNavire.Application
             }
             finally { Console.ReadKey(); }
         }
-        public static void TesterInstanciations()
+        public static void InitPort()
         {
-            //déclaration de l'objet unNavire de la classe Navire
+            Port port = new Port("Toulon");
             Navire unNavire;
-            // Instanciation de l'objet
-            unNavire = new Navire("IMO9427639", "Copper Spirit", "Hydrocarbures", 156827, 150000);
-            Affiche(unNavire);
-            //Declaration ET instanciation d'un autre objet de la classe Navire
-            Navire unAutreNavire = new Navire("IMO9427639", "MSC Isabella", "Porte-conteneurs", 197500, 150000);
-            Affiche(unAutreNavire);
-            // Instanciation de l'objet
+            unNavire = new Navire("IMO9427639", "Copper Spirit", "Hydrocarbures", 156827, 120000);
+            Navire unAutreNavire = new Navire("IMO9839272", "MSC Isabella", "Porte-conteneurs", 197500, 13000);
             unAutreNavire = new Navire("IMO8715871", "MSC PILAR");
-            Affiche(unAutreNavire);
+            Console.WriteLine("Fin de chargement du port");
         }
         public static void Affiche(Navire navire)
         {
@@ -136,7 +131,6 @@ namespace GestionNavire.Application
                 port.EnregistrerArrivee(new Navire("IMO9235232", "FORTUNE TRADER", "Cargo", 74750, 70000));
                 port.EnregistrerArrivee(new Navire("IMO9405423", "SERENEA", "Tanker", 158583, 150000));
                 port.EnregistrerArrivee(new Navire("IMO9574004", "TRITON SEAHAWK", "Hydrocarbures", 51201, 50000));
-                port.EnregistrerArrivee(new Navire("IMO9839272", "MSC Isabella", "Porte-conteneurs", 157587, 150000));
             }
             catch (GestionPortException ex)
             {
@@ -188,7 +182,7 @@ namespace GestionNavire.Application
             catch (GestionPortException ex) { Console.WriteLine(ex.Message); }
             try
             {
-                port.EnregistrerArrivee(new Navire("IMO978641", "EVER GLOBE", "Porte-conteneurs", 198937, 190000));
+                port.EnregistrerArrivee(new Navire("IMO9786841", "EVER GLOBE", "Porte-conteneurs", 198937, 190000));
                 String imo = "IMO9786841";
                 port.Dechargement(imo);
                 Console.WriteLine("Navire " + imo + " déchargé");

@@ -8,18 +8,18 @@ namespace GestionNavire.ClassesMetier
     class Stockage
     {
         private int numero;
-        private int capacitéMaxi;
+        private int capaciteMaxi;
         private int capaciteDispo;
 
-        public Stockage(int numero, int capacitéMaxi, int capaciteDispo)
+        public Stockage(int numero, int capaciteMaxi, int capaciteDispo)
         {
             this.numero = numero;
-            this.CapacitéMaxi = capacitéMaxi;
+            this.CapaciteMaxi = capaciteMaxi;
             this.CapaciteDispo = capaciteDispo;
         }
-        public Stockage(int numero, int capacitéMaxi) : this(numero, capacitéMaxi, 0) { }
+        public Stockage(int numero, int capaciteMaxi) : this(numero, capaciteMaxi, capaciteMaxi) { }
 
-        public int Stocker(int quantite)
+        public void Stocker(int quantite)
         {
             if (quantite <= 0)
             {
@@ -31,19 +31,19 @@ namespace GestionNavire.ClassesMetier
             }
             else
             {
-                return this.capaciteDispo - quantite;
+                this.capaciteDispo -= quantite;
             }
 
         }
         public int Numero { get => numero; }
-        public int CapacitéMaxi
+        public int CapaciteMaxi
         {
-            get => capacitéMaxi;
+            get => capaciteMaxi;
             set
             {
                 if (value > 0)
                 {
-                    this.capacitéMaxi = value;
+                    this.capaciteMaxi = value;
                 }
                 else
                 {
@@ -56,14 +56,14 @@ namespace GestionNavire.ClassesMetier
             get => capaciteDispo;
             set
             {
-                if (value <= 0)
+                if (value < 0)
                 {
                     throw new GestionPortException("la quantité à stocker dans un stockage ne peut être négative ou nulle");
                 }
-                else if (this.capacitéMaxi >= value)
+                else if (this.capaciteMaxi >= value)
                 {
                     // On peut stocker
-                    this.capaciteDispo -= value;
+                    this.capaciteDispo = value;
                 }
                 else
                 {

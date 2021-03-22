@@ -55,15 +55,24 @@ namespace GestionNavire.Classesmetier
         public void Dechargement(string imo)
         {
             Navire navire = GetNavire(imo);
-            if (this.navires.ContainsKey(imo) && navire.LibelleFret == "Porte-conteneurs")
+            if (navire != null && navire.LibelleFret == "Porte-conteneurs")
             {
                 int i = 0;
-                while (i < this.stockages.Count && navire.QteFret != 0)
+                while (i < this.stockages.Count && !navire.EstDecharge())
                 {
-                    navire.Decharger(this.stockages[i].CapaciteDispo);
+                    if (this.stockages[i].CapaciteDispo != 0 && this.stockages[i].CapaciteDispo > navire.QteFret)
+                    {
+                        navire.Decharger(navire.QteFret);
+                        this.stockages[i].Stocker(navire.QteFret);
+                    }
+                    else
+                    {
+                        navire.Decharger(this.stockages[i].CapaciteDispo);
+                        this.stockages[i].Stocker(this.stockages[i].CapaciteDispo);
+                    }
                     i++;
                 }
-                if (i < this.stockages.Count)
+                if (navire.EstDecharge())
                 {
                     Console.WriteLine("Le navire à bien été déchargé");
                 }
@@ -71,11 +80,10 @@ namespace GestionNavire.Classesmetier
                 {
                     throw new GestionPortException("Le navire " + navire.Imo + " n'a pas pu être entièrement déchargé, il reste " + navire.QteFret + " tonnes.");
                 }
-
             }
             else
             {
-                throw new GestionPortException("Impossible de décharger le navire " + navire.Imo + " il n'est pas dans le port ou n'est pas un porte-conteneurs.");
+                throw new GestionPortException("Impossible de décharger le navire " + imo + " il n'est pas dans le port ou n'est pas un porte-conteneurs.");
             }
         }
         public void AjoutStockage(Stockage stockage)

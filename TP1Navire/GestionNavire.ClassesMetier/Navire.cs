@@ -52,7 +52,7 @@ namespace GestionNavire.Classesmetier
         }
         public void Decharger(int quantite)
         {
-            if (quantite > 0 && quantite < this.QteFret)
+            if (quantite > 0 && quantite <= this.QteFret)
             {
                 this.qteFret -= quantite;
             }
@@ -74,7 +74,7 @@ namespace GestionNavire.Classesmetier
         }
         public string Imo { get => imo; }
         public string Nom { get => nom; set => nom = value; }
-        public string LibelleFret { get => libelleFret; set => libelleFret = value; }
+        public string LibelleFret { get => libelleFret; }
         public int QteFret { get => qteFret; }
         public int QteFretMaxi
         {
