@@ -60,7 +60,7 @@ namespace GestionNavire.Classesmetier
                 int i = 0;
                 while (i < this.stockages.Count && !navire.EstDecharge())
                 {
-                    if (this.stockages[i].CapaciteDispo != 0 && this.stockages[i].CapaciteDispo > navire.QteFret)
+                    if (this.stockages[i].CapaciteDispo >= 0 && this.stockages[i].CapaciteDispo > navire.QteFret)
                     {
                         navire.Decharger(navire.QteFret);
                         this.stockages[i].Stocker(navire.QteFret);

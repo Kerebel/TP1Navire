@@ -52,15 +52,15 @@ namespace GestionNavire.Classesmetier
         }
         public void Decharger(int quantite)
         {
-            if (quantite > 0 && quantite <= this.QteFret)
+            if (quantite >= 0 && quantite <= this.QteFret)
             {
                 this.qteFret -= quantite;
             }
             else
             {
-                if (quantite > 0)
+                if (quantite < 0)
                 {
-                    throw new GestionPortException("La quantité à décharger ne peut être négative ou nulle");
+                    throw new GestionPortException("La quantité à décharger ne peut être négative");
                 }
                 else
                 {

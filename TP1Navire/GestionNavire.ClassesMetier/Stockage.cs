@@ -21,9 +21,9 @@ namespace GestionNavire.ClassesMetier
 
         public void Stocker(int quantite)
         {
-            if (quantite <= 0)
+            if (quantite < 0)
             {
-                throw new GestionPortException("la quantité à stocker dans un stockage ne peut être négative ou nulle");
+                throw new GestionPortException("la quantité à stocker dans un stockage ne peut être négative");
             }
             else if (quantite > this.capaciteDispo)
             {
@@ -54,7 +54,7 @@ namespace GestionNavire.ClassesMetier
         public int CapaciteDispo
         {
             get => capaciteDispo;
-            set
+            private set
             {
                 if (value < 0)
                 {

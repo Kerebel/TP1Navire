@@ -169,7 +169,6 @@ namespace GestionNavire.Application
                 String imo = "IMO1111111";
                 port.Dechargement(imo);
                 Console.WriteLine("Navire " + imo + " déchargé");
-                port.EnregistrerDepart(imo);
             }
             catch (GestionPortException ex) { Console.WriteLine(ex.Message); }
             try
@@ -177,7 +176,6 @@ namespace GestionNavire.Application
                 String imo = "IMO9574004";
                 port.Dechargement(imo);
                 Console.WriteLine("Navire " + imo + " déchargé");
-                port.EnregistrerDepart(imo);
             }
             catch (GestionPortException ex) { Console.WriteLine(ex.Message); }
             try
@@ -195,7 +193,6 @@ namespace GestionNavire.Application
                 String imo = "IMO9776432";
                 port.Dechargement(imo);
                 Console.WriteLine("Navire " + imo + " déchargé");
-                port.EnregistrerDepart(imo);
             }
             catch (GestionPortException ex) { Console.WriteLine(ex.Message); }
         }
