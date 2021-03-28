@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NavireHeritage.ClassesMetier
 {
-    class Croisière : Navire
+    class Croisiere : Navire
     {
         /// <summary>
         /// V: voilier ; M: moteur
@@ -20,13 +20,13 @@ namespace NavireHeritage.ClassesMetier
         /// </summary>
         private Dictionary<string, Passager> passagers;
 
-        public Croisière(string imo, string latitude, string longitude, string nom, int tonnageActuel, int tonnageGT, int tonnageDWT, string typeNavireCroisiere, int nbPassagersMaxi ) : base(imo, latitude, longitude, nom, tonnageActuel, tonnageGT, tonnageDWT)
+        public Croisiere(string imo, string latitude, string longitude, string nom, int tonnageActuel, int tonnageGT, int tonnageDWT, string typeNavireCroisiere, int nbPassagersMaxi ) : base(imo, latitude, longitude, nom, tonnageActuel, tonnageGT, tonnageDWT)
         {
             this.typeNavireCroisiere = typeNavireCroisiere;
             this.nbPassagersMaxi = nbPassagersMaxi;
         }
 
-        public Croisière(string imo, string latitude, string longitude, string nom, int tonnageActuel, int tonnageGT, int tonnageDWT, string typeNavireCroisiere, int nbPassagersMaxi, Dictionary<int, Passager> passagers) : base(imo, latitude, longitude, nom, tonnageActuel, tonnageGT, tonnageDWT) { this.passagers = passagers; }
+        public Croisiere(string imo, string latitude, string longitude, string nom, int tonnageActuel, int tonnageGT, int tonnageDWT, string typeNavireCroisiere, int nbPassagersMaxi, Dictionary<int, Passager> passagers) : base(imo, latitude, longitude, nom, tonnageActuel, tonnageGT, tonnageDWT) { this.passagers = passagers; }
         /// <summary>
         /// Met à jour la liste des passagers du bateau en ajoutant les passagers passés en paramètre
         /// </summary>

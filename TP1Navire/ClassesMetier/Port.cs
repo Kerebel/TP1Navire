@@ -69,18 +69,56 @@ namespace NavireHeritage.ClassesMetier
         /// <param name="navire"></param>
         public void EnregistrerArriveePrevue(Navire navire)
         {
-            //try
-            //{
-            //    if (this.navires.Count < nbNaviresMax)
-            //    {
-            //        this.navires.Add(navire.Imo, navire);
-            //    }
-            //    
-            //}
-            //catch (ArgumentException)
-            //{
-            //    throw new GestionPortException("Le navire " + navire.Imo + " est déjà enregistré");
-            //}
+            if (navire is Cargo)
+            {
+                if (this.NbPortique > navireArrives.Count)
+                {
+                    navireAttendus.Add(navire.Imo, navire);
+                }
+                else
+                {
+                    throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les cargos");
+                }
+            }
+            else if (navire is Croisiere)
+            {
+                if (this.NbQuaisPassager > navireArrives.Count)
+                {
+                    navireAttendus.Add(navire.Imo, navire);
+                }
+                else
+                {
+                    throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les navires de croisières");
+                }
+            }
+            else if (navire is Tanker)
+            {
+                if(navire.TonnageDWT <= 130000)
+                {
+                    if (this.nbQuaisTanker < navireArrives.Count)
+                    {
+                        navireAttendus.Add(navire.Imo, navire);
+                    }
+                    else
+                    {
+                        throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les tankers");
+                    }
+                }
+                else
+                {
+                    if (this.NbQuaisSuperTanker < navireArrives.Count)
+                    {
+                        navireAttendus.Add(navire.Imo, navire);
+                    }
+                    else
+                    {
+                        throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les super tankers");
+                    }
+                }
+            }
+        }
+        public void EnregistrerArrivee(Navire navire)
+        {
             if (navire is Cargo)
             {
                 if (this.NbPortique > navireArrives.Count)
@@ -92,6 +130,46 @@ namespace NavireHeritage.ClassesMetier
                     throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les cargos");
                 }
             }
+            else if (navire is Croisiere)
+            {
+                if (this.NbQuaisPassager > navireArrives.Count)
+                {
+                    navireArrives.Add(navire.Imo, navire);
+                }
+                else
+                {
+                    throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les navires de croisières");
+                }
+            }
+            else if (navire is Tanker)
+            {
+                if (navire.TonnageDWT <= 130000)
+                {
+                    if (this.nbQuaisTanker < navireArrives.Count)
+                    {
+                        navireArrives.Add(navire.Imo, navire);
+                    }
+                    else
+                    {
+                        throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les tankers");
+                    }
+                }
+                else
+                {
+                    if (this.NbQuaisSuperTanker < navireArrives.Count)
+                    {
+                        navireArrives.Add(navire.Imo, navire);
+                    }
+                    else
+                    {
+                        throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les super tankers");
+                    }
+                }
+            }
+        }
+        public void EnregistrerArrivee()
+        {
+
         }
         public void EnregistrerDepart(string imo)
         {
