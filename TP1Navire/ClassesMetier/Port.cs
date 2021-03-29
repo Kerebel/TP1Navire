@@ -69,54 +69,30 @@ namespace NavireHeritage.ClassesMetier
         /// <param name="navire"></param>
         public void EnregistrerArriveePrevue(Navire navire)
         {
-            if (navire is Cargo)
+            if (!EstPresent(navire.Imo) && !EstAttendu(navire.Imo) && !EstEnAttente(navire.Imo))
             {
-                if (this.NbPortique > navireArrives.Count)
-                {
-                    navireAttendus.Add(navire.Imo, navire);
-                }
-                else
-                {
-                    throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les cargos");
-                }
+                navireAttendus.Add(navire.Imo, navire);
             }
-            else if (navire is Croisiere)
+            else
             {
-                if (this.NbQuaisPassager > navireArrives.Count)
+                if (EstPresent(navire.Imo))
                 {
-                    navireAttendus.Add(navire.Imo, navire);
+                    throw new GestionPortException("Le navire est déjà présent dans le port");
+                }
+                else if (EstAttendu(navire.Imo))
+                {
+                    throw new GestionPortException("L'arrivée du navire est déjà prévue");
                 }
                 else
                 {
-                    throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les navires de croisières");
-                }
-            }
-            else if (navire is Tanker)
-            {
-                if(navire.TonnageDWT <= 130000)
-                {
-                    if (this.nbQuaisTanker < navireArrives.Count)
-                    {
-                        navireAttendus.Add(navire.Imo, navire);
-                    }
-                    else
-                    {
-                        throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les tankers");
-                    }
-                }
-                else
-                {
-                    if (this.NbQuaisSuperTanker < navireArrives.Count)
-                    {
-                        navireAttendus.Add(navire.Imo, navire);
-                    }
-                    else
-                    {
-                        throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les super tankers");
-                    }
+                    throw new GestionPortException("La navire est en attente d'un quai dans le port");
                 }
             }
         }
+        /// <summary>
+        ///  Enregistrement de l'arrivée d'un navire enregistré en tant que arrivée prévue
+        /// </summary>
+        /// <param name="navire"></param>
         public void EnregistrerArrivee(Navire navire)
         {
             if (navire is Cargo)
@@ -127,7 +103,8 @@ namespace NavireHeritage.ClassesMetier
                 }
                 else
                 {
-                    throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les cargos");
+                    AjoutNavireEnAttente(navire);
+                    Console.WriteLine("Navire mis en attente, il ne reste plus de quais libres pour les cargos");
                 }
             }
             else if (navire is Croisiere)
@@ -138,7 +115,8 @@ namespace NavireHeritage.ClassesMetier
                 }
                 else
                 {
-                    throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les navires de croisières");
+                    AjoutNavireEnAttente(navire);
+                    Console.WriteLine("Navire mis en attente, il ne reste plus de quais libres pour les navires de croisières");
                 }
             }
             else if (navire is Tanker)
@@ -151,7 +129,8 @@ namespace NavireHeritage.ClassesMetier
                     }
                     else
                     {
-                        throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les tankers");
+                        AjoutNavireEnAttente(navire);
+                        Console.WriteLine("Navire mis en attente, il ne reste plus de quais libres pour les tankers");
                     }
                 }
                 else
@@ -162,30 +141,100 @@ namespace NavireHeritage.ClassesMetier
                     }
                     else
                     {
-                        throw new GestionPortException("Enregistrement impossible, il ne reste plus de quais libres pour les super tankers");
+                        AjoutNavireEnAttente(navire);
+                        Console.WriteLine("Navire mis en attente, il ne reste plus de quais libres pour les super tankers");
                     }
                 }
             }
         }
-        public void EnregistrerArrivee()
+        public void EnregistrerArrivee(string imo)
         {
-
+            if (navireAttendus.ContainsKey(imo))
+            {
+                foreach (Navire navire in navireAttendus.Values)
+                {
+                    {
+                        EnregistrerArrivee(navire);
+                    }
+                }
+            }
         }
+        public void EnregistrerDepart(Navire navire)
+        {
+            EnregistrerDepart(navire.Imo);
+        }
+        /// <summary>
+        /// Enregistrement du départ d'un navire présent dans le port
+        /// </summary>
+        /// <param name="imo"></param>
         public void EnregistrerDepart(string imo)
         {
             if (EstPresent(imo))
             {
-                this.navires.Remove(imo);
+                this.navireArrives.Remove(imo);
+                this.navirePartis.Add(GetNavire(imo).Imo, GetNavire(imo));
             }
             else
             {
                 throw new GestionPortException("Impossible d'enregistrer le navire " + imo + " , il n'est pas dans le port");
             }
         }
+        /// <summary>
+        /// Ajout du navire passé en paramètre dans le dictionnaire des navires en attente d'un quai dans le port
+        /// </summary>
+        /// <param name="navire"></param>
+        public void AjoutNavireEnAttente(Navire navire)
+        {
+            navireEnAttente.Add(navire.Imo, navire);
+        }
+        /// <summary>
+        /// Retourne vrai si le navire est dans le port
+        /// </summary>
+        /// <param name="imo"></param>
+        /// <returns></returns>
         public bool EstPresent(string imo)
         {
-            return navires.ContainsKey(imo);
+            return navireArrives.ContainsKey(imo);
         }
+        /// <summary>
+        /// Retourne vrai si le navire est attendu.
+        /// </summary>
+        /// <param name="imo"></param>
+        /// <returns></returns>
+        public bool EstAttendu(string imo)
+        {
+            return navireAttendus.ContainsKey(imo);
+        }
+        /// <summary>
+        /// Retourne vrai si le navire est en attente d'un quai dans le port
+        /// </summary>
+        /// <param name="imo"></param>
+        /// <returns></returns>
+        public bool EstEnAttente(string imo)
+        {
+            return navireEnAttente.ContainsKey(imo);
+        }
+        /// <summary>
+        /// Chargement du navire dont l'id et la quantité sont passés en paramètre 
+        /// </summary>
+        /// <param name="imo"></param>
+        /// <param name="quantite"></param>
+        public void Chargement(string imo, int quantite)
+        {
+            Navire navire = GetNavire(imo);
+            if (navire != null && navire is Cargo cargo)
+            {
+                int i = 0;
+                while (i < this.stockages.Count)
+                {
+
+                }
+            }
+        }
+        /// <summary>
+        /// Déhargement du navire dont l'id et la quantité sont passés en paramètre 
+        /// </summary>
+        /// <param name="imo"></param>
         public void Dechargement(string imo)
         {
             Navire navire = GetNavire(imo);
@@ -220,13 +269,100 @@ namespace NavireHeritage.ClassesMetier
                 throw new GestionPortException("Impossible de décharger le navire " + imo + " il n'est pas dans le port ou n'est pas un porte-conteneurs.");
             }
         }
+        /// <summary>
+        /// Retourne l'objet dont l'id a été passé en paramètre ou une exception de type Exception 
+        /// </summary>
+        /// <param name="imo"></param>
+        /// <returns></returns>
+        public Navire getUnAttendu(string imo)
+        {
+            if (this.navireAttendus.TryGetValue(imo, out Navire navire))
+            {
+                return navire;
+            }
+            return null;
+        }
+        /// <summary>
+        /// Retourne l'objet dont l'id a été passé en paramètre ou une exception de type Exception 
+        /// </summary>
+        /// <param name="imo"></param>
+        /// <returns></returns>
+        public Navire getUnArrive(string imo)
+        {
+            if (this.navireArrives.TryGetValue(imo, out Navire navire))
+            {
+                return navire;
+            }
+            return null;
+        }
+        /// <summary>
+        /// Retourne l'objet dont l'id a été passé en paramètre ou une exception de type Exception 
+        /// </summary>
+        /// <param name="imo"></param>
+        /// <returns></returns>
+        public Navire getUnParti(string imo)
+        {
+            if (!this.navirePartis.TryGetValue(imo, out Navire navire))
+            {
+                return navire;
+            }
+            return null;
+        }
+        /// <summary>
+        /// retourne le nombre de tankers (tonnageGT <= 130000) présents dans le port 
+        /// </summary>
+        /// <returns></returns>
+        public int NbTankerArrives()
+        {
+            int cpt = 0;
+            foreach (Navire navire in navireArrives.Values)
+            {
+                if (navire is Tanker && navire.TonnageGT <= 130000)
+                {
+                    cpt+= 1;
+                }
+            }
+            return cpt;
+        }
+        /// <summary>
+        /// Retourne le nombre de super tankers (tonnageGT>130000) présents dans le port 
+        /// </summary>
+        /// <returns></returns>
+        public int GetSuperTankerArrives()
+        {
+            int cpt = 0;
+            foreach(Navire navire in navireArrives.Values)
+            {
+                if (navire is Tanker && navire.TonnageGT > 130000)
+                {
+                    cpt += 1;
+                }
+            }
+            return cpt;
+        }
+        /// <summary>
+        /// Retourne le nombre de cargos présents dans le port 
+        /// </summary>
+        /// <returns></returns>
+        public int getNbCargoArrives()
+        {
+            int cpt = 0;
+            foreach(Navire navire in navireArrives.Values)
+            {
+                if (navire is Cargo)
+                {
+                    cpt += 1;
+                }
+            }
+            return cpt;
+        }
         public void AjoutStockage(Stockage stockage)
         {
             this.stockages.Add(stockage);
         }
         public Navire GetNavire(String imo)
         {
-            if (this.navires.TryGetValue(imo, out Navire navire))
+            if (this.navireArrives.TryGetValue(imo, out Navire navire))
             {
                 return navire;
             }

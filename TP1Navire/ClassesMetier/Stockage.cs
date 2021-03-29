@@ -4,8 +4,17 @@ namespace NavireHeritage.ClassesMetier
 {
     class Stockage
     {
+        /// <summary>
+        /// Identifiant du stockage
+        /// </summary>
         private int numero;
+        /// <summary>
+        /// Capacité de tonnage maximum du stockage
+        /// </summary>
         private int capaciteMaxi;
+        /// <summary>
+        /// Capacité disponible du stockage 
+        /// </summary>
         private int capaciteDispo;
 
         public Stockage(int numero, int capaciteMaxi, int capaciteDispo)
@@ -20,7 +29,7 @@ namespace NavireHeritage.ClassesMetier
         {
             if (quantite < 0)
             {
-                throw new GestionPortException("la quantité à stocker dans un stockage ne peut être négative");
+                throw new GestionPortException("La quantité à stocker dans un stockage ne peut être négative");
             }
             else if (quantite > this.capaciteDispo)
             {

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace NavireHeritage.ClassesMetier
 {
-    class Navire
+    abstract class Navire
     {
         /// <summary>
         /// Numéro IMO du bateau sous la forme IMO9999999.

@@ -40,6 +40,7 @@ namespace NavireHeritage.ClassesMetier
         {
             return tonnageActuel == 0;
         }
+        public bool 
         public string TypeFluide { get => typeFluide;  }
     }
 }
