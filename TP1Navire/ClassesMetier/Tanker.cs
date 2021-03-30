@@ -38,9 +38,8 @@ namespace NavireHeritage.ClassesMetier
         /// <returns></returns>
         public bool EstDecharge()
         {
-            return tonnageActuel == 0;
+            return this.tonnageActuel == 0;
         }
-        public bool 
         public string TypeFluide { get => typeFluide;  }
     }
 }

@@ -50,7 +50,15 @@ namespace NavireHeritage.ClassesMetier
             this.nom = nom;
             this.tonnageActuel = tonnageActuel;
             this.tonnageGT = tonnageGT;
-            this.tonnageDWT = tonnageDWT;
+            if (tonnageDWT > 0)
+            {
+                this.tonnageDWT = tonnageDWT;
+            }
+            else
+            {
+                throw new GestionPortException("Impossible de créer une capacité maximale de chargement avec une capacité négative");
+            }
+            
             
         }
         public override string ToString()
@@ -69,8 +77,26 @@ namespace NavireHeritage.ClassesMetier
         public string Latitude { get => latitude; set => latitude = value; }
         public string Longitude { get => longitude; set => longitude = value; }
         public string Nom { get => nom; }
-        public int TonnageActuel { get => tonnageActuel; set => tonnageActuel = value; }
+        public int TonnageActuel { 
+            get => tonnageActuel; 
+            protected set
+            {
+                if (value < 0)
+                {
+                    throw new GestionPortException("le tonnage actuel ne peut être négatif");
+                }
+                else if (this.tonnageDWT >= value)
+                {
+                    // On peut stocker
+                    this.tonnageActuel = value;
+                }
+                else
+                {
+                    throw new GestionPortException("Impossible d'avoir un tonnage actuel plus grand que le tonnage DWT ");
+                }
+            }
+        }
         public int TonnageGT { get => tonnageGT; }
-        public int TonnageDWT { get => tonnageDWT;  }
+        public int TonnageDWT { get => tonnageDWT; }
     }
 }

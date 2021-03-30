@@ -23,20 +23,30 @@ namespace NavireHeritage.ClassesMetier
         public Croisiere(string imo, string latitude, string longitude, string nom, int tonnageActuel, int tonnageGT, int tonnageDWT, string typeNavireCroisiere, int nbPassagersMaxi ) : base(imo, latitude, longitude, nom, tonnageActuel, tonnageGT, tonnageDWT)
         {
             this.typeNavireCroisiere = typeNavireCroisiere;
-            this.nbPassagersMaxi = nbPassagersMaxi;
+            if (nbPassagersMaxi > passagers.Count)
+            {
+                this.nbPassagersMaxi = nbPassagersMaxi;
+            }
         }
 
         public Croisiere(string imo, string latitude, string longitude, string nom, int tonnageActuel, int tonnageGT, int tonnageDWT, string typeNavireCroisiere, int nbPassagersMaxi, Dictionary<int, Passager> passagers) : base(imo, latitude, longitude, nom, tonnageActuel, tonnageGT, tonnageDWT) { this.passagers = passagers; }
         /// <summary>
         /// Met à jour la liste des passagers du bateau en ajoutant les passagers passés en paramètre
         /// </summary>
-        public void Embarquer(Dictionary<string, Passager> nouvPassagers)
+        public void Embarquer(List<Passager>nouvPassagers)
         {
             if (nouvPassagers.Count < nbPassagersMaxi - passagers.Count)
             {
-                foreach (Passager passager in nouvPassagers.Values)
+                foreach (Passager passager in nouvPassagers)
                 {
-                    passagers.Add(passager.NumPasseport, passager);
+                    if (passagers.ContainsKey(passager.NumPasseport))
+                    {
+                        passagers.Add(passager.NumPasseport, passager);
+                    }
+                    else
+                    {
+                        throw new GestionPortException("Le passager n'est pas dans la liste d'embarquement");
+                    }
                 }
             }
             else
@@ -48,10 +58,10 @@ namespace NavireHeritage.ClassesMetier
         ///  Met à jour la liste des passagers du bateau en retirant les passagers passés en paramètre
         /// </summary>
         /// <returns>retourne la liste des passagers passés en paramètre et qui n'ont pas été trouvés dans la liste des passagers du navire.</returns>
-        public Dictionary<string, Passager> Debarquer(Dictionary<string, Passager> passagersEmbarques)
+        public List<Passager> Debarquer(List<Passager> passagersEmbarques)
         {
-            Dictionary<string, Passager> passagersNonTrouves = new Dictionary<string, Passager>();
-            foreach (Passager passager in passagersEmbarques.Values)
+            List<Passager> passagersNonTrouves = new List<Passager>();
+            foreach (Passager passager in passagersEmbarques)
             {
                 if (passagers.ContainsKey(passager.NumPasseport))
                 {
@@ -59,7 +69,7 @@ namespace NavireHeritage.ClassesMetier
                 }
                 else
                 {
-                    passagersNonTrouves.Add(passager.NumPasseport, passager);
+                    passagersNonTrouves.Add(passager);
                 }
             }
             return passagersNonTrouves;

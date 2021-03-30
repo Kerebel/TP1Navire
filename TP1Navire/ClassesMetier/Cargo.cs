@@ -2,10 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Station.Interfaces;
 
 namespace NavireHeritage.ClassesMetier
 {
-    class Cargo : Navire
+    class Cargo : Navire, INavCommercable
     {
         /// <summary>
         /// Chaine représentatnt le type de cargaison du bateau : denrées périssables, matériel, ...
@@ -56,7 +57,7 @@ namespace NavireHeritage.ClassesMetier
         /// <returns></returns>
         public bool EstDecharge()
         {
-            return tonnageActuel == 0;
+            return this.tonnageActuel == 0;
         }
         public string TypeFret { get => typeFret; }
     }

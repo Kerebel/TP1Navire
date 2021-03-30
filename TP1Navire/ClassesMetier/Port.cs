@@ -47,7 +47,7 @@ namespace NavireHeritage.ClassesMetier
         /// Dictionnaire des navires en attente d'avoir un quai libre pour stationner.String = id du navire
         /// </summary>
         private Dictionary<string, Navire> navireEnAttente;
-        private List<Stockage> stockages;
+        private Dictionary<int,Stockage> stockages;
         public Port(string nom, string latitude, string longitude, int nbPortique, int nbQuaisPassager, int nbQuaisTanker, int nbQuaisSuperTanker)
         {
             this.nom = nom;
@@ -61,8 +61,9 @@ namespace NavireHeritage.ClassesMetier
             this.navireArrives = new Dictionary<string, Navire>();
             this.navirePartis = new Dictionary<string, Navire>();
             this.navireEnAttente = new Dictionary<string, Navire>();
-            this.stockages = new List<Stockage>();
+            this.stockages = new Dictionary<int, Stockage>();
         }
+        public Port() : this("Indéfini", "Indéfini", "Indéfini", 0, 0, 0, 0) { }
         /// <summary>
         /// Enregistrement de l'arrivée proche d'un navire
         /// </summary>
@@ -358,7 +359,7 @@ namespace NavireHeritage.ClassesMetier
         }
         public void AjoutStockage(Stockage stockage)
         {
-            this.stockages.Add(stockage);
+            this.stockages.Add(stockage.Numero, stockage);
         }
         public Navire GetNavire(String imo)
         {
@@ -382,6 +383,6 @@ namespace NavireHeritage.ClassesMetier
         internal Dictionary<string, Navire> NavireArrives { get => navireArrives; }
         internal Dictionary<string, Navire> NavirePartis { get => navirePartis; }
         internal Dictionary<string, Navire> NavireEnAttente { get => navireEnAttente; }
-        internal List<Stockage> Stockages { get => stockages; }
+        internal Dictionary<int,Stockage> Stockages { get => stockages; }
     }
 }
