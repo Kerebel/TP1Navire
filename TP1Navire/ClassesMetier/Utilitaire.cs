@@ -13,11 +13,9 @@ namespace NavireHeritage.ClassesMetier
         /// <returns></returns>
         public Dictionary <int,int> ItineraireDeChargeNavire(Navire navire, int quantite )
         {
-            Dictionary<int, Stockage> stockages = new Dictionary<int, Stockage>();
-            Port port = new Port();
             foreach (Stockage stockage in stockages.Values)
             {
-                if (port.EstPresent(navire.Imo))
+                if (
                 {
                     if (navire is Tanker tanker)
                     {

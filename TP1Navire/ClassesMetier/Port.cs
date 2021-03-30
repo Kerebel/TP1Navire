@@ -34,20 +34,20 @@ namespace NavireHeritage.ClassesMetier
         /// <summary>
         /// Dictionnaire des navires attendus. String = id du navire
         /// </summary>
-        private Dictionary<string, Navire> navireAttendus;
+        private Dictionary<string, Navire> navireAttendus = new Dictionary<string, Navire>();
         /// <summary>
         /// Dictionnaire des navires arrivés, c’est-à-dire présents dans le port.String = id du navire
         /// </summary>
-        private Dictionary<string, Navire> navireArrives;
+        private Dictionary<string, Navire> navireArrives = new Dictionary<string, Navire>();
         /// <summary>
         /// Dictionnaire des navires partis récemment. String = id du navire
         /// </summary>
-        private Dictionary<string, Navire> navirePartis;
+        private Dictionary<string, Navire> navirePartis = new Dictionary<string, Navire>();
         /// <summary>
         /// Dictionnaire des navires en attente d'avoir un quai libre pour stationner.String = id du navire
         /// </summary>
-        private Dictionary<string, Navire> navireEnAttente;
-        private Dictionary<int,Stockage> stockages;
+        private Dictionary<string, Navire> navireEnAttente = new Dictionary<string, Navire>();
+        private Dictionary<int,Stockage> stockages=  new Dictionary<int, Stockage>();
         public Port(string nom, string latitude, string longitude, int nbPortique, int nbQuaisPassager, int nbQuaisTanker, int nbQuaisSuperTanker)
         {
             this.nom = nom;
@@ -57,13 +57,7 @@ namespace NavireHeritage.ClassesMetier
             this.nbQuaisPassager = nbQuaisPassager;
             this.nbQuaisTanker = nbQuaisTanker;
             this.nbQuaisSuperTanker = nbQuaisSuperTanker;
-            this.navireAttendus = new Dictionary<string, Navire>();
-            this.navireArrives = new Dictionary<string, Navire>();
-            this.navirePartis = new Dictionary<string, Navire>();
-            this.navireEnAttente = new Dictionary<string, Navire>();
-            this.stockages = new Dictionary<int, Stockage>();
         }
-        public Port() : this("Indéfini", "Indéfini", "Indéfini", 0, 0, 0, 0) { }
         /// <summary>
         /// Enregistrement de l'arrivée proche d'un navire
         /// </summary>
@@ -101,10 +95,12 @@ namespace NavireHeritage.ClassesMetier
                 if (this.NbPortique > navireArrives.Count)
                 {
                     navireArrives.Add(navire.Imo, navire);
+                    navireAttendus.Remove(navire.Imo);
                 }
                 else
                 {
                     AjoutNavireEnAttente(navire);
+                    navireAttendus.Remove(navire.Imo);
                     Console.WriteLine("Navire mis en attente, il ne reste plus de quais libres pour les cargos");
                 }
             }
@@ -113,11 +109,7 @@ namespace NavireHeritage.ClassesMetier
                 if (this.NbQuaisPassager > navireArrives.Count)
                 {
                     navireArrives.Add(navire.Imo, navire);
-                }
-                else
-                {
-                    AjoutNavireEnAttente(navire);
-                    Console.WriteLine("Navire mis en attente, il ne reste plus de quais libres pour les navires de croisières");
+                    navireAttendus.Remove(navire.Imo);
                 }
             }
             else if (navire is Tanker)
@@ -127,10 +119,12 @@ namespace NavireHeritage.ClassesMetier
                     if (this.nbQuaisTanker < navireArrives.Count)
                     {
                         navireArrives.Add(navire.Imo, navire);
+                        navireAttendus.Remove(navire.Imo);
                     }
                     else
                     {
                         AjoutNavireEnAttente(navire);
+                        navireAttendus.Remove(navire.Imo);
                         Console.WriteLine("Navire mis en attente, il ne reste plus de quais libres pour les tankers");
                     }
                 }
@@ -139,10 +133,12 @@ namespace NavireHeritage.ClassesMetier
                     if (this.NbQuaisSuperTanker < navireArrives.Count)
                     {
                         navireArrives.Add(navire.Imo, navire);
+                        navireAttendus.Remove(navire.Imo);
                     }
                     else
                     {
                         AjoutNavireEnAttente(navire);
+                        navireAttendus.Remove(navire.Imo);
                         Console.WriteLine("Navire mis en attente, il ne reste plus de quais libres pour les super tankers");
                     }
                 }
@@ -371,6 +367,10 @@ namespace NavireHeritage.ClassesMetier
             {
                 return null;
             }
+        }
+        private void PermutEtatNavire(Dictionary<string, Navire> ancienEtat, Dictionary<string, Navire> nouvetat)
+        {
+            ancienEtat.Remove
         }
         public string Nom { get => nom; set => nom = value; }
         public string Latitude { get => latitude; }

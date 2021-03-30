@@ -63,7 +63,7 @@ namespace NavireHeritage.ClassesMetier
         }
         public override string ToString()
         {
-            return "Identification : " + this.imo + " \n Nom : " + this.nom + "\n Type de frêt : " + this.libelleFret + " \n Quantité de Frêt : " + this.qteFretMaxi;
+            return "Identification : {0} \n Nom : {1} \n Latitude : {2} " + this.libelleFret + " \n Longitude : {3}",  this.Imo, this.nom, this.qteFretMaxi;
         }
         
         public bool IsMatch(string imo)
